@@ -6,13 +6,240 @@
 <title>Sujit Murari | Business Analytics</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* ══ IP.AXIS ELEMENTS — HOME ONLY ══ */
+
+/* ── MEGA NAV ── */
+.mega-nav {
+  position: fixed; top: 28px; left: 0; right: 0; z-index: 599;
+  background: rgba(10,10,8,.96); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--wire2);
+  display: flex; align-items: stretch; height: 34px;
+}
+.mn-logo {
+  display: flex; align-items: center; gap: 10px; padding: 0 18px;
+  border-right: 1px solid var(--wire2); text-decoration: none; cursor: none;
+  font-family: var(--cond); font-size: .95rem; font-weight: 700;
+  color: var(--accent); letter-spacing: .1em; text-transform: uppercase;
+}
+.mn-logo .jp { font-family: var(--jp); font-size: .54rem; font-weight: 300; color: var(--dim); }
+
+/* nav columns */
+.mn-cols { display: flex; flex: 1; }
+.mn-col {
+  border-right: 1px solid var(--wire2); position: relative;
+  display: flex; align-items: center;
+}
+.mn-col-head {
+  padding: 0 16px; height: 100%; display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .1em;
+  color: var(--dim); text-transform: uppercase; white-space: nowrap;
+  cursor: none; text-decoration: none;
+  transition: color .12s, background .12s;
+}
+.mn-col-head:hover, .mn-col-head.active { color: var(--accent); background: rgba(232,228,220,.04); }
+.mn-col-head .jp-sm { font-family: var(--jp); font-size: .52rem; color: var(--muted); }
+
+/* dropdown */
+.mn-dropdown {
+  position: absolute; top: 34px; left: 0;
+  background: rgba(10,10,8,.98); border: 1px solid var(--wire2);
+  border-top: none; min-width: 200px; padding: 8px 0;
+  opacity: 0; pointer-events: none; transform: translateY(-4px);
+  transition: opacity .15s, transform .15s;
+  z-index: 10;
+}
+.mn-col:hover .mn-dropdown { opacity: 1; pointer-events: auto; transform: none; }
+.mn-drop-item {
+  display: block; padding: 6px 16px;
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .08em;
+  color: var(--dim); text-decoration: none; text-transform: uppercase;
+  transition: color .1s, background .1s; cursor: none;
+  display: flex; align-items: center; gap: 8px;
+}
+.mn-drop-item::before { content: '/'; color: var(--muted); }
+.mn-drop-item:hover { color: var(--alert); background: rgba(200,255,0,.04); }
+.mn-drop-item .jp-sm { font-family: var(--jp); font-size: .5rem; color: var(--muted); }
+
+/* right side */
+.mn-right {
+  display: flex; align-items: center; margin-left: auto;
+  border-left: 1px solid var(--wire2);
+}
+/* X-mark grid — 3×2 like IP.AXIS */
+.xmark-grid {
+  display: grid; grid-template-columns: repeat(3,28px); grid-template-rows: repeat(2,17px);
+  gap: 1px; padding: 0 14px; border-right: 1px solid var(--wire2);
+}
+.xmark {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: .52rem; color: var(--muted);
+  border: 1px solid var(--wire); transition: all .12s; cursor: none;
+}
+.xmark:hover { color: var(--alert); border-color: rgba(200,255,0,.3); }
+.mn-status {
+  display: flex; align-items: center; gap: 8px; padding: 0 16px;
+  font-family: var(--mono); font-size: .56rem; color: var(--alert); letter-spacing: .1em;
+}
+
+/* ── FULL BLEED HERO ── */
+.ipax-hero {
+  position: relative; width: 100vw; height: 100vh;
+  overflow: hidden; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* full bleed photo */
+.ipax-bg {
+  position: absolute; inset: 0;
+  background: url('me.jpeg') center 15% / cover no-repeat;
+  filter: grayscale(30%) contrast(1.1);
+  transform: scale(1.04);
+  animation: bgdrift 14s ease-in-out infinite alternate;
+}
+@keyframes bgdrift { 0%{transform:scale(1.04) translateX(0)} 100%{transform:scale(1.08) translateX(-12px)} }
+
+/* layered overlays */
+.ipax-overlay-1 { position:absolute;inset:0;background:rgba(10,10,8,.65); }
+.ipax-overlay-2 { position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,8,.4) 0%,transparent 40%,transparent 60%,rgba(10,10,8,.9) 100%); }
+.ipax-overlay-3 {
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(232,228,220,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(232,228,220,.025) 1px,transparent 1px);
+  background-size:80px 80px;
+}
+
+/* scan line */
+.ipax-scanline {
+  position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,255,0,.5),transparent);
+  animation:scanline 5s linear infinite; pointer-events:none; z-index:4;
+}
+@keyframes scanline { 0%{top:62px;opacity:1}100%{top:100vh;opacity:0} }
+
+/* vertical ruler columns (IP.AXIS measurement lines) */
+.ipax-rulers {
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  display:flex;
+}
+.ipax-ruler-col {
+  flex:1;border-right:1px solid rgba(232,228,220,.06);
+  position:relative;
+}
+.ipax-ruler-col::before {
+  content:attr(data-label);
+  position:absolute;bottom:52px;left:4px;
+  font-family:var(--mono);font-size:.38rem;
+  color:rgba(232,228,220,.2);letter-spacing:.1em;text-transform:uppercase;
+  writing-mode:vertical-rl;
+}
+
+/* ── SELECTION BOX (design app handles) ── */
+.ipax-selection {
+  position: relative; z-index: 5;
+  border: 1px dashed rgba(232,228,220,.5);
+  padding: 36px 52px;
+  text-align: center;
+  min-width: 480px;
+  animation: selbreathe 3s ease-in-out infinite;
+}
+@keyframes selbreathe {
+  0%,100%{border-color:rgba(232,228,220,.45)}
+  50%{border-color:rgba(232,228,220,.2)}
+}
+
+/* 8 anchor handles */
+.sel-handle {
+  position:absolute;width:8px;height:8px;
+  background:var(--bg);border:1px solid rgba(232,228,220,.8);
+}
+.sel-h-tl{top:-4px;left:-4px} .sel-h-tc{top:-4px;left:50%;transform:translateX(-50%)}
+.sel-h-tr{top:-4px;right:-4px} .sel-h-ml{top:50%;left:-4px;transform:translateY(-50%)}
+.sel-h-mr{top:50%;right:-4px;transform:translateY(-50%)}
+.sel-h-bl{bottom:-4px;left:-4px} .sel-h-bc{bottom:-4px;left:50%;transform:translateX(-50%)}
+.sel-h-br{bottom:-4px;right:-4px}
+
+/* content inside selection */
+.ipax-name-jp {
+  font-family: var(--jp); font-size: clamp(2.5rem,6vw,5.5rem); font-weight: 700;
+  color: var(--accent); letter-spacing: .04em; line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 40px rgba(232,228,220,.2);
+}
+.ipax-name-latin {
+  font-family: var(--mono); font-size: .75rem; letter-spacing: .3em;
+  color: rgba(232,228,220,.55); text-transform: uppercase; margin-bottom: 24px;
+}
+
+/* CTA button below title (IP.AXIS style — outlined rect) */
+.ipax-cta-row { display: flex; gap: 1px; justify-content: center; flex-wrap: wrap; }
+.ipax-cta {
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .16em;
+  text-transform: uppercase; text-decoration: none;
+  border: 1px solid rgba(232,228,220,.45); color: var(--accent);
+  padding: 8px 22px; display: inline-flex; align-items: center; gap: 8px;
+  transition: all .14s; cursor: none; background: rgba(10,10,8,.6);
+}
+.ipax-cta:hover { background: var(--accent); color: var(--ink); }
+.ipax-cta.alert-btn { border-color: rgba(200,255,0,.45); color: var(--alert); background: rgba(200,255,0,.05); }
+.ipax-cta.alert-btn:hover { background: var(--alert); color: var(--ink); }
+.ipax-cta .jp-sm { font-family: var(--jp); font-size: .48rem; color: inherit; opacity: .7; }
+
+/* ── BOTTOM INFO BAR (IP.AXIS dense metadata) ── */
+.ipax-infobar {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 6;
+  background: rgba(10,10,8,.94); border-top: 1px solid var(--wire2);
+  display: grid;
+  grid-template-columns: 72px 160px 100px 100px 1fr 120px;
+  min-height: 50px;
+}
+.ib-cell {
+  border-right: 1px solid var(--wire);
+  padding: 7px 10px;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+}
+.ib-cell:last-child { border-right: none; }
+.ib-key {
+  font-family: var(--mono); font-size: .42rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--muted);
+}
+.ib-val {
+  font-family: var(--mono); font-size: .62rem; color: var(--dim); letter-spacing: .06em;
+}
+.ib-val.hi { color: var(--accent); }
+.ib-val.alert { color: var(--alert); text-shadow: 0 0 6px var(--alert); }
+/* barcode in info bar */
+.ib-barcode { display: flex; gap: 1px; height: 20px; align-items: flex-end; }
+.ib-barcode span { background: var(--dim); width: 2px; }
+/* description block — wider cell */
+.ib-desc {
+  font-family: var(--mono); font-size: .48rem; letter-spacing: .04em;
+  color: rgba(232,228,220,.3); line-height: 1.6;
+}
+/* note cell */
+.ib-note { font-family: var(--mono); font-size: .44rem; color: rgba(232,228,220,.2); line-height: 1.5; letter-spacing: .04em; }
+
+/* ── RULER TOPLINE above hero ── */
+.ipax-ruler-bar {
+  position: absolute; top: 62px; left: 0; right: 0; z-index: 6;
+  height: 14px; background: rgba(10,10,8,.7); border-bottom: 1px solid var(--wire2);
+  display: flex; overflow: hidden;
+}
+.ipax-ruler-bar span {
+  flex: 1; border-right: 1px solid var(--wire);
+  font-family: var(--mono); font-size: .38rem; color: var(--muted);
+  padding: 2px 3px; text-transform: uppercase; letter-spacing: .08em;
+}
+</style>
 </head>
 <body>
 <div id="cur"></div>
 <div id="cur-ring"></div>
 
+<!-- ═══ TOPBAR (browser chrome) ═══ -->
 <div class="topbar">
-  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO / INDEX</span></div>
+  <div class="tb-addr"><span class="tb-protocol">HTTPS://</span><span class="tb-url">SM.ANALYTICS.PORTFOLIO</span></div>
   <div class="tb-status">
     <span>SUJIT.MURARI</span>
     <span>DATE: <span id="live-date">—</span></span>
@@ -22,72 +249,181 @@
   <div class="tb-controls"><div class="tb-btn">—</div><div class="tb-btn">□</div><div class="tb-btn close">✕</div></div>
 </div>
 
-<nav>
-  <a class="nav-logo" href="index.html"><span>Sujit Murari</span><span class="jp">スジット・ムラリ</span></a>
-  <ul class="nav-items">
-    <li><a href="skills.html">/ Skills スキル</a></li>
-    <li><a href="projects.html">/ Projects 作品</a></li>
-    <li><a href="about.html">/ About 概要</a></li>
-    <li><a href="connect.html">/ Connect 接続</a></li>
-    <li><a href="contact.html">/ Contact 連絡</a></li>
-  </ul>
-  <div class="nav-right"><div class="nav-tag"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div></div>
+<!-- ═══ MEGA NAV (IP.AXIS multi-column dropdown style) ═══ -->
+<nav class="mega-nav">
+  <a class="mn-logo" href="index.html">
+    <span>Sujit Murari</span>
+    <span class="jp">スジット・ムラリ</span>
+  </a>
+
+  <div class="mn-cols">
+
+    <div class="mn-col">
+      <a class="mn-col-head" href="skills.html">SKILLS スキル <span class="jp-sm">能力</span></a>
+      <div class="mn-dropdown">
+        <a class="mn-drop-item" href="skills.html">Visualisation <span class="jp-sm">可視化</span></a>
+        <a class="mn-drop-item" href="skills.html">Data Analysis <span class="jp-sm">分析</span></a>
+        <a class="mn-drop-item" href="skills.html">Programming <span class="jp-sm">プログラム</span></a>
+        <a class="mn-drop-item" href="skills.html">Statistics <span class="jp-sm">統計</span></a>
+      </div>
+    </div>
+
+    <div class="mn-col">
+      <a class="mn-col-head" href="projects.html">PROJECTS 作品 <span class="jp-sm">選択</span></a>
+      <div class="mn-dropdown">
+        <a class="mn-drop-item" href="projects.html">Flights Analytics <span class="jp-sm">航空</span></a>
+        <a class="mn-drop-item" href="projects.html">E-Commerce <span class="jp-sm">電子商取引</span></a>
+        <a class="mn-drop-item" href="projects.html">Gym Performance <span class="jp-sm">健康</span></a>
+        <a class="mn-drop-item" href="projects.html">Decathlon India <span class="jp-sm">小売</span></a>
+      </div>
+    </div>
+
+    <div class="mn-col">
+      <a class="mn-col-head" href="about.html">ABOUT 概要 <span class="jp-sm">背景</span></a>
+      <div class="mn-dropdown">
+        <a class="mn-drop-item" href="about.html">Identity <span class="jp-sm">身分</span></a>
+        <a class="mn-drop-item" href="about.html">Analytics Stack <span class="jp-sm">スタック</span></a>
+        <a class="mn-drop-item" href="about.html">Mission <span class="jp-sm">使命</span></a>
+        <a class="mn-drop-item" href="about.html">Coursework <span class="jp-sm">科目</span></a>
+      </div>
+    </div>
+
+    <div class="mn-col">
+      <a class="mn-col-head" href="contact.html">CONTACT 連絡 <span class="jp-sm">問合</span></a>
+      <div class="mn-dropdown">
+        <a class="mn-drop-item" href="contact.html">Send Message <span class="jp-sm">送信</span></a>
+        <a class="mn-drop-item" href="connect.html">Platforms <span class="jp-sm">プラット</span></a>
+        <a class="mn-drop-item" href="mailto:sujitmurari06@gmail.com">Email Direct <span class="jp-sm">直接</span></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mn-right">
+    <!-- 3×2 X-mark grid (IP.AXIS top-right) -->
+    <div class="xmark-grid">
+      <div class="xmark">⊠</div><div class="xmark">⊠</div><div class="xmark">⊠</div>
+      <div class="xmark">⊠</div><div class="xmark">⊠</div><div class="xmark">⊠</div>
+    </div>
+    <div class="mn-status"><span class="dot-live"></span>OPEN TO INTERNSHIPS</div>
+  </div>
 </nav>
 
-<div class="ruler"><div class="ruler-marks">
-  <span>HYPERTEXT</span><span>TRANSFER</span><span>PROTOCOL</span><span>SECURE</span>
-  <span>HOME</span><span>INDEX</span><span>MAIN</span><span>ROOT</span>
-  <span>JP</span><span>IN</span><span>ANALYTICS</span><span>STUDIO</span>
-</div></div>
+<!-- ═══ FULL-BLEED HERO (IP.AXIS style) ═══ -->
+<div class="ipax-hero">
 
-<div class="home-hero">
-  <span class="hc hc-tl"></span><span class="hc hc-tr"></span>
-  <span class="hc hc-bl"></span><span class="hc hc-br"></span>
+  <!-- Full bleed background photo -->
+  <div class="ipax-bg"></div>
+  <div class="ipax-overlay-1"></div>
+  <div class="ipax-overlay-2"></div>
+  <div class="ipax-overlay-3"></div>
 
-  <div class="home-photo-panel">
-    <div class="photo-frame">
-      <img src="me.jpeg" alt="Sujit Murari" class="photo-img">
-      <div class="photo-overlay"></div>
-      <div class="photo-scan"></div>
-      <span class="pc pc-tl"></span><span class="pc pc-tr"></span>
-      <span class="pc pc-bl"></span><span class="pc pc-br"></span>
-      <div class="photo-label">SUBJECT_01 · スジット・ムラリ</div>
+  <!-- Scan line -->
+  <div class="ipax-scanline"></div>
+
+  <!-- Ruler bar just below nav -->
+  <div class="ipax-ruler-bar">
+    <span>HYPERTEXT</span><span>TRANSFER</span><span>PROTOCOL</span><span>SECURE</span>
+    <span>J7</span><span>WAIST</span><span>WIDE</span><span>WEB</span>
+    <span>JP</span><span>BIAS</span><span>INDUSTRIAL</span><span>STUDIO</span>
+  </div>
+
+  <!-- Vertical ruler columns -->
+  <div class="ipax-rulers">
+    <div class="ipax-ruler-col" data-label="HYPERTEXT"></div>
+    <div class="ipax-ruler-col" data-label="TRANSFER"></div>
+    <div class="ipax-ruler-col" data-label="PROTOCOL"></div>
+    <div class="ipax-ruler-col" data-label="SECURE"></div>
+    <div class="ipax-ruler-col" data-label="J7"></div>
+    <div class="ipax-ruler-col" data-label="WAIST"></div>
+    <div class="ipax-ruler-col" data-label="WIDE"></div>
+    <div class="ipax-ruler-col" data-label="WEB"></div>
+    <div class="ipax-ruler-col" data-label="JP"></div>
+    <div class="ipax-ruler-col" data-label="BIAS"></div>
+    <div class="ipax-ruler-col" data-label="ANALYTICS"></div>
+    <div class="ipax-ruler-col" data-label="STUDIO"></div>
+  </div>
+
+  <!-- ── SELECTION BOX with name inside (IP.AXIS hero element) ── -->
+  <div class="ipax-selection">
+    <!-- 8 anchor handles -->
+    <div class="sel-handle sel-h-tl"></div>
+    <div class="sel-handle sel-h-tc"></div>
+    <div class="sel-handle sel-h-tr"></div>
+    <div class="sel-handle sel-h-ml"></div>
+    <div class="sel-handle sel-h-mr"></div>
+    <div class="sel-handle sel-h-bl"></div>
+    <div class="sel-handle sel-h-bc"></div>
+    <div class="sel-handle sel-h-br"></div>
+
+    <!-- Large Japanese name -->
+    <div class="ipax-name-jp">スジット・ムラリ</div>
+    <!-- Latin subtitle -->
+    <div class="ipax-name-latin">SM.ANALYTICS.PORTFOLIO</div>
+
+    <!-- IP.AXIS style CTA buttons -->
+    <div class="ipax-cta-row">
+      <a class="ipax-cta alert-btn" href="projects.html">PROJECTS 作品</a>
+      <a class="ipax-cta" href="about.html">ABOUT 概要</a>
+      <a class="ipax-cta" href="contact.html">CONTACT 連絡</a>
     </div>
   </div>
 
-  <div class="home-identity">
-    <div class="hi-pre">BUSINESS ANALYTICS PORTFOLIO · 2025</div>
-    <div class="hi-name-block">
-      <div class="hi-name-jp">スジット・ムラリ</div>
-      <h1 class="hi-name">SUJIT<br>MURARI</h1>
-    </div>
-    <div class="hi-role">
-      <span class="role-tag">BBA</span>
-      <span class="role-sep">//</span>
-      <span class="role-tag">BUSINESS ANALYTICS</span>
-      <span class="role-sep">//</span>
-      <span class="role-tag">SEM IV · DBUU</span>
-    </div>
-    <p class="hi-tagline">Decoding complex data systems —<br>transforming them into <strong>strategic business intelligence.</strong></p>
+  <!-- ── DENSE BOTTOM INFO BAR (IP.AXIS metadata footer) ── -->
+  <div class="ipax-infobar">
 
-    <div class="home-nav-tiles">
-      <a class="hn-tile" href="skills.html"><div class="hn-num">01</div><div class="hn-en">SKILLS</div><div class="hn-jp">スキル</div><div class="hn-arr">→</div></a>
-      <a class="hn-tile" href="projects.html"><div class="hn-num">02</div><div class="hn-en">PROJECTS</div><div class="hn-jp">作品</div><div class="hn-arr">→</div></a>
-      <a class="hn-tile" href="about.html"><div class="hn-num">03</div><div class="hn-en">ABOUT</div><div class="hn-jp">概要</div><div class="hn-arr">→</div></a>
-      <a class="hn-tile" href="connect.html"><div class="hn-num">04</div><div class="hn-en">CONNECT</div><div class="hn-jp">接続</div><div class="hn-arr">→</div></a>
-      <a class="hn-tile hn-wide" href="contact.html"><div class="hn-num">05</div><div class="hn-en">CONTACT</div><div class="hn-jp">連絡</div><div class="hn-arr">→</div></a>
+    <!-- Barcode -->
+    <div class="ib-cell">
+      <div class="ib-barcode" id="ib-barcode"></div>
+      <div style="font-family:var(--mono);font-size:.36rem;color:var(--muted);letter-spacing:.06em;margin-top:3px;">SM ANALYTICS</div>
     </div>
-  </div>
 
-  <div class="home-data-strip">
-    <div class="hds-cell"><div class="hds-k">PROJECTS 作品</div><div class="hds-v">04</div></div>
-    <div class="hds-cell"><div class="hds-k">SKILLS スキル</div><div class="hds-v">12+</div></div>
-    <div class="hds-cell"><div class="hds-k">TOOLS ツール</div><div class="hds-v">04</div></div>
-    <div class="hds-cell"><div class="hds-k">SEMESTER 学期</div><div class="hds-v">IV</div></div>
-    <div class="hds-cell"><div class="hds-k">STATUS 状態</div><div class="hds-v" style="color:var(--alert)">OPEN</div></div>
+    <!-- Company -->
+    <div class="ib-cell">
+      <div class="ib-key">COMPANY 会社</div>
+      <div class="ib-val hi">SUJIT.MURARI</div>
+      <div class="ib-key" style="margin-top:2px;">PROGRAMME 課程</div>
+      <div class="ib-val" style="font-size:.54rem;">BBA · BUSINESS ANALYTICS</div>
+    </div>
+
+    <!-- Date -->
+    <div class="ib-cell">
+      <div class="ib-key">DATE 日付</div>
+      <div class="ib-val hi" id="ib-date">—</div>
+      <div class="ib-key" style="margin-top:2px;">TIME 時間</div>
+      <div class="ib-val hi" id="ib-time">00:00:00</div>
+    </div>
+
+    <!-- Designer -->
+    <div class="ib-cell">
+      <div class="ib-key">DESIGNER 設計者</div>
+      <div class="ib-val">SUJIT MURARI</div>
+      <div class="ib-key" style="margin-top:2px;">SEMESTER 学期</div>
+      <div class="ib-val">SEM IV · DBUU</div>
+    </div>
+
+    <!-- Description (wide) -->
+    <div class="ib-cell">
+      <div class="ib-key">DESCRIPTION 説明</div>
+      <div class="ib-desc">
+        SUJIT.MURARI is a Business Analytics student focused on decoding complex data systems and transforming them into strategic business intelligence.
+        Work operates at the intersection of analytics, technology, and decision science — where raw data becomes actionable insight.
+        CORE STACK: Tableau · Python · SQL · Excel · Regression · Correlation · KPI Modeling.
+      </div>
+    </div>
+
+    <!-- Note / Status -->
+    <div class="ib-cell">
+      <div class="ib-key">STATUS 状態</div>
+      <div class="ib-val alert">■ OPEN TO INTERNSHIPS</div>
+      <div class="ib-key" style="margin-top:4px;">NOTE 注記</div>
+      <div class="ib-note">ALL DASHBOARDS LIVE ON TABLEAU PUBLIC. PORTFOLIO © 2026 SUJIT MURARI. UTTARAKHAND, INDIA.</div>
+    </div>
+
   </div>
 </div>
 
+<!-- TICKER -->
 <div class="ticker"><div class="ticker-prefix">// TRANSMISSION</div><div class="ticker-track">
   <div class="ticker-item"><span class="mark"></span>TABLEAU PUBLIC · 4 LIVE DASHBOARDS</div>
   <div class="ticker-item"><span class="mark"></span>BBA · BUSINESS ANALYTICS · SEM IV · DBUU</div>
@@ -105,17 +441,25 @@
   <div class="ticker-item"><span class="mark"></span>OPEN TO INTERNSHIPS · UTTARAKHAND 2025</div>
 </div></div>
 
-<div class="footer-main">
-  <div class="footer-barcode"><div class="barcode-svg"></div><div class="barcode-text">SM·ANALYTICS<br>PORTFOLIO</div></div>
-  <div class="footer-cell"><div class="fc-label">Entity</div><div class="fc-value">SUJIT.MURARI</div></div>
-  <div class="footer-cell"><div class="fc-label">Programme</div><div class="fc-value">BBA · BUSINESS ANALYTICS</div></div>
-  <div class="footer-cell"><div class="fc-label">University</div><div class="fc-value">DBUU · UTTARAKHAND</div></div>
-  <div class="footer-cell"><div class="fc-label">Status</div><div class="fc-value alert">OPEN TO INTERNSHIPS</div></div>
-</div>
-<div class="footer-bottom">
-  <div class="fb-l">© 2026 SUJIT MURARI — BUSINESS ANALYTICS PORTFOLIO</div>
-  <div class="fb-r">DATA → INSIGHT → DECISION</div>
-</div>
 <script src="script.js"></script>
+<script>
+// Infobar barcode
+const ibb = document.getElementById('ib-barcode');
+if(ibb){
+  [1,.4,.7,.3,1,.5,.8,.3,.6,.4,.9,.5,.7,.35,1,.4,.75,.5,.9,.4].forEach(h=>{
+    const s=document.createElement('span');
+    s.style.height=Math.round(h*20)+'px';
+    ibb.appendChild(s);
+  });
+}
+// Infobar clock
+const ibd=document.getElementById('ib-date'),ibt=document.getElementById('ib-time');
+function updateIB(){
+  const n=new Date();
+  if(ibd) ibd.textContent=[n.getDate(),n.getMonth()+1,n.getFullYear()].map(x=>String(x).padStart(2,'0')).join('/');
+  if(ibt) ibt.textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(x=>String(x).padStart(2,'0')).join(':');
+}
+updateIB(); setInterval(updateIB,1000);
+</script>
 </body>
 </html>
